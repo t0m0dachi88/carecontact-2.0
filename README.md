@@ -1,4 +1,4 @@
-# CareConnect — Comprehensive Healthcare Platform
+# CareContact — Comprehensive Healthcare Platform
 
 A full-stack healthcare platform built with Next.js 14, Supabase, and Tailwind CSS.
 MediPrep AI pre-consultation is fully integrated as the AI Health Consultant feature.
