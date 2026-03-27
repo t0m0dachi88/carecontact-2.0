@@ -40,7 +40,7 @@ npm install
 
 ### 2. Configure environment
 ```bash
-cp .env.local.example .env.local
+cp .env
 ```
 Edit `.env.local`:
 ```
@@ -48,7 +48,7 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ANTHROPIC_API_KEY=your_anthropic_api_key   # optional, uses Ollama if not set
 OLLAMA_URL=http://localhost:11434           # for local AI
-MODEL=qwen2                                 # your Ollama model name
+MODEL=qwen2:3.5B(exactly name dite hobe )                     
 ```
 
 ### 3. Set up Supabase
