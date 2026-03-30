@@ -1,98 +1,93 @@
 import { NextResponse } from "next/server";
 const SYSTEM_PROMPT = require("../../../prompts/mediprep.js");
 
-const OLLAMA_URL        = process.env.OLLAMA_URL || "http://localhost:11434";
-const MODEL             = process.env.MODEL      || "qwen2";
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const HF_API_KEY = process.env.HF_API_KEY || "";
 
 export async function POST(request) {
   try {
     const { messages } = await request.json();
-    if (!messages || !Array.isArray(messages))
-      return NextResponse.json({ error: "messages array required" }, { status: 400 });
 
-    let reply;
-
-    // Only use Claude if key is set AND non-empty
-    const useClaud = ANTHROPIC_API_KEY && ANTHROPIC_API_KEY.trim().length > 10;
-
-    if (useClaud) {
-      // ── Claude API ──────────────────────────────
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 2048,
-          system: SYSTEM_PROMPT,
-          messages,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.error("Claude API error:", data);
-        // Fall back to Ollama if Claude fails
-        return callOllama(messages, SYSTEM_PROMPT, OLLAMA_URL, MODEL);
-      }
-      reply = data.content?.[0]?.text || "I could not generate a response.";
-
-    } else {
-      // ── Ollama (default) ────────────────────────
-      const result = await callOllama(messages, SYSTEM_PROMPT, OLLAMA_URL, MODEL);
-      return result;
+    if (!messages || !Array.isArray(messages)) {
+      return NextResponse.json(
+        { error: "messages array required" },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({ reply: wrapReport(reply) });
+    const result = await callHuggingFace(messages);
+
+    if (!result.ok) {
+      console.error("HF FAILED:", result.error);
+      return NextResponse.json({ error: result.error }, { status: 500 });
+    }
+
+    return NextResponse.json({ reply: wrapReport(result.reply) });
 
   } catch (err) {
-    console.error("Chat API error:", err.message);
-    return NextResponse.json({ error: "Server error: " + err.message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Server error: " + err.message },
+      { status: 500 }
+    );
   }
 }
 
-async function callOllama(messages, systemPrompt, ollamaUrl, model) {
+// ✅ NEW HF CHAT API (OpenAI-style)
+async function callHuggingFace(messages) {
   try {
-    const res = await fetch(`${ollamaUrl}/api/chat`, {
+    if (!HF_API_KEY) {
+      return { ok: false, error: "Missing HuggingFace API key" };
+    }
+
+    const res = await fetch("https://router.huggingface.co/v1/chat/completions", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Authorization": `Bearer ${HF_API_KEY}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        model,
-        messages: [{ role: "system", content: systemPrompt }, ...messages],
-        stream: false,
-        options: { temperature: 0.4, num_predict: 2048 },
+        model: "meta-llama/Meta-Llama-3-8B-Instruct", // ✅ reliable
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...messages,
+        ],
+        temperature: 0.4,
+        max_tokens: 1024,
       }),
     });
 
+    const data = await res.json();
+
     if (!res.ok) {
-      const err = await res.text();
-      console.error("Ollama error:", err);
-      return NextResponse.json({
-        error: `Ollama failed: ${err}. Make sure Ollama is running on ${ollamaUrl} and model '${model}' is installed. Run: ollama pull ${model}`,
-      }, { status: 500 });
+      console.error("HF ERROR:", data);
+      return { ok: false, error: data.error || "HF request failed" };
     }
 
-    const data = await res.json();
-    const reply = data.message?.content || "I could not generate a response.";
-    return NextResponse.json({ reply: wrapReport(reply) });
+    const reply = data.choices?.[0]?.message?.content;
+
+    if (!reply) {
+      return { ok: false, error: "Empty response from HuggingFace" };
+    }
+
+    return { ok: true, reply };
 
   } catch (err) {
-    return NextResponse.json({
-      error: `Cannot connect to Ollama at ${ollamaUrl}. Make sure Ollama is running.`,
-    }, { status: 500 });
+    return { ok: false, error: err.message };
   }
 }
 
+// ── Wrap report ─────────────────────────
 function wrapReport(reply) {
   if (
     !reply.includes("===REPORT_START===") &&
     reply.includes("## Chief Complaint") &&
     reply.includes("## History of Present Illness")
   ) {
-    return "Thank you, I have all the information I need. Generating your report now.\n\n===REPORT_START===\n" + reply + "\n===REPORT_END===";
+    return (
+      "Thank you, I have all the information I need. Generating your report now.\n\n" +
+      "===REPORT_START===\n" +
+      reply +
+      "\n===REPORT_END==="
+    );
   }
   return reply;
 }
