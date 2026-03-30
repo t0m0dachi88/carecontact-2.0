@@ -53,7 +53,7 @@ export default function ReportModal({ report, onClose, onNewSession, sessionId, 
       }
 
       // 6. Trigger browser download
-      doc.save(`CareConnect_Report_${new Date().toISOString().slice(0, 10)}.pdf`);
+      doc.save(`CareContact_Report_${new Date().toISOString().slice(0, 10)}.pdf`);
       setSaved(true);
 
     } catch (err) {

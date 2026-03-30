@@ -39,7 +39,7 @@ export default function DoctorRegisterPage() {
           <div className="text-center mb-8">
             <div className="text-4xl mb-3">🩺</div>
             <h1 className="text-2xl font-bold text-slate-100 mb-1" style={{fontFamily:"'Syne',sans-serif"}}>Doctor Registration</h1>
-            <p className="text-sm text-slate-500">Join CareConnect as a verified doctor</p>
+            <p className="text-sm text-slate-500">Join CareContact as a verified doctor</p>
           </div>
           {error && <div className="bg-red-950/40 border border-red-800/40 text-red-400 text-sm px-4 py-3 rounded-xl mb-5">⚠️ {error}</div>}
           <form onSubmit={handleRegister} className="space-y-5">

@@ -54,7 +54,7 @@ export default function LoginPage() {
           <div className="text-5xl mb-3">🏥</div>
           <h1 className="text-2xl font-bold text-slate-100 mb-1"
             style={{ fontFamily: "'Syne', sans-serif" }}>
-            CareConnect
+            CareContact
           </h1>
           <p className="text-sm text-slate-500">Sign in to your account</p>
         </div>

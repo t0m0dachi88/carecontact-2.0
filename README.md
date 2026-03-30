@@ -54,7 +54,7 @@ MODEL=qwen2.5-coder:7b  dae161e27b0e  4.7 GB (exactly name dite hobe )
 ### 3. Set up Supabase
 1. Create a project at supabase.com
 2. Go to SQL Editor
-3. Paste and run the entire contents of `careconnect_schema.sql`
+3. Paste and run the entire contents of `CareContact_schema.sql`
 
 ### 4. Get API keys
 
@@ -74,8 +74,7 @@ Open http://localhost:3000
 
 ## Project Structure
 
-```
-careconnect/
+```CareContact/
 ├── app/
 │   ├── login/                    Login page
 │   ├── register/
@@ -116,7 +115,7 @@ careconnect/
 ├── prompts/
 │   └── mediprep.js               MediPrep system prompt
 ├── middleware.js                 Role-based route protection
-└── careconnect_schema.sql        Run this in Supabase SQL Editor
+└── CareContact_schema.sql        Run this in Supabase SQL Editor
 ```
 
 ---
