@@ -68,7 +68,7 @@ MODEL=qwen2.5-coder:7b  dae161e27b0e  4.7 GB (exactly name dite hobe )
 ```bash
 npm run dev
 ```
-Open http://localhost:3000
+Open [http://localhost:3000](https://carecontact-2-0.vercel.app/patient/dashboard)
 
 ---
 
