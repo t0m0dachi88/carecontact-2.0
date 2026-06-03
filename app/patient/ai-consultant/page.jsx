@@ -114,7 +114,7 @@ export default function AIConsultantPage() {
       <Sidebar role="patient" user={user} profile={profile} />
       <main className="main-content animate-fade-in">
         <div className="mb-6">
-          <h1 className="page-title">AI Health Consultant 🤖</h1>
+          <h1 className="page-title">I am Chopper, your AI Health Consultant </h1>
           <p className="text-slate-500 text-sm mt-1">Complete your pre-consultation before your appointment</p>
         </div>
 
@@ -140,7 +140,7 @@ export default function AIConsultantPage() {
             <div className="chat-header">
               <div className="chat-avatar">🩺</div>
               <div style={{flex:1}}>
-                <div style={{color:"#e2eeff",fontWeight:700,fontSize:"0.95rem",fontFamily:"'Syne',sans-serif"}}>MediPrep Assistant</div>
+                <div style={{color:"#e2eeff",fontWeight:700,fontSize:"0.95rem",fontFamily:"'Syne',sans-serif"}}>Chopper Assistant</div>
                 <div style={{display:"flex",alignItems:"center",gap:5,marginTop:3}}>
                   <span style={{width:6,height:6,borderRadius:"50%",background:"#34d399",display:"inline-block"}} />
                   <span style={{color:"rgba(148,163,184,0.8)",fontSize:"0.68rem"}}>{patientName} · Pre-appointment screening</span>
