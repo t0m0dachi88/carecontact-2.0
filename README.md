@@ -1,7 +1,7 @@
 # CareContact-2.0 — Comprehensive Healthcare Platform
 
 A full-stack healthcare platform built with Next.js 14, Supabase, and Tailwind CSS.
-MediPrep AI pre-consultation is fully integrated as the AI Health Consultant feature.
+Chopper AI pre-consultation is fully integrated as the AI Health Consultant feature.
 
 ---
 
@@ -11,7 +11,7 @@ MediPrep AI pre-consultation is fully integrated as the AI Health Consultant fea
 - Dashboard with upcoming appointments, AI report, notifications
 - Doctor discovery with search and specialty filters
 - Appointment booking and management (cancel/reschedule)
-- AI Health Consultant (MediPrep) — pre-consultation chat linked to appointments
+- AI Health Consultant (Chopper) — pre-consultation chat linked to appointments
 - Medical records viewer
 - Secure messaging with doctors
 - Profile management
@@ -68,7 +68,7 @@ MODEL=qwen2.5-coder:7b  dae161e27b0e  4.7 GB (exactly name dite hobe )
 ```bash
 npm run dev
 ```
-Open http://localhost:3000
+Open [http://localhost:3000](https://carecontact-2-0.vercel.app/patient/dashboard)
 
 ---
 
@@ -84,7 +84,7 @@ Open http://localhost:3000
 │   │   ├── dashboard/
 │   │   ├── doctors/              Doctor discovery
 │   │   ├── appointments/         Book + manage appointments
-│   │   ├── ai-consultant/        MediPrep AI chat
+│   │   ├── ai-consultant/        Chopper AI chat
 │   │   ├── records/              Medical records
 │   │   ├── messages/             Doctor messaging
 │   │   └── profile/
@@ -102,7 +102,7 @@ Open http://localhost:3000
 │   └── api/                      API routes
 │       ├── doctors/
 │       ├── appointments/
-│       └── chat/                 MediPrep AI endpoint
+│       └── chat/                 Chopper AI endpoint
 ├── components/
 │   ├── shared/                   Sidebar, LoadingScreen
 │   ├── ai/                       ChatWindow, ReportModal
@@ -110,10 +110,10 @@ Open http://localhost:3000
 ├── lib/
 │   ├── supabase.js               Browser client
 │   ├── supabaseServer.js         Server client
-│   ├── utils.js                  MediPrep utilities + PDF generation
+│   ├── utils.js                  Chopper utilities + PDF generation
 │   └── useAuth.js                Auth hook
 ├── prompts/
-│   └── mediprep.js               MediPrep system prompt
+│   └── Chopper.js               Chopper system prompt
 ├── middleware.js                 Role-based route protection
 └── CareContact_schema.sql        Run this in Supabase SQL Editor
 ```
